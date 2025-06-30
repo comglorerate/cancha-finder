@@ -587,7 +587,8 @@ const handleImageError = (event, cancha) => {
 
 .clear-filters-btn {
   padding: 0.5rem 1rem;
-  background-color: #f1f5f9;
+  background-color: var(--primary-color);
+  color: white;
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   font-size: 0.85rem;
