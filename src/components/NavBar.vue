@@ -1,7 +1,7 @@
 <template>
   <header class="navbar">
     <div class="container navbar-container">
-      <router-link to="/" class="logo">CanchaFinder</router-link>
+      <router-link to="/" class="logo">CanchaFinder.</router-link>
 
       <!-- Botón hamburguesa para móviles -->
       <button
