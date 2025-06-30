@@ -1205,7 +1205,7 @@ onBeforeUnmount(() => {
 }
 
 .nav-tab.active {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
 }
 
@@ -1282,7 +1282,7 @@ onBeforeUnmount(() => {
 }
 
 .reservations-icon {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
 }
 .users-icon {
   background-color: #2196f3;
@@ -1320,7 +1320,7 @@ onBeforeUnmount(() => {
 
 .chart-bar {
   flex: 1;
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   margin: 0 5px;
   min-height: 20px;
   border-radius: 4px 4px 0 0;
@@ -1405,7 +1405,7 @@ onBeforeUnmount(() => {
 }
 
 .activity-icon.reservation {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
 }
 .activity-icon.cancellation {
   background-color: #f44336;
@@ -1545,7 +1545,7 @@ onBeforeUnmount(() => {
 /* Botones */
 .btn-add,
 .btn-save {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
   color: white;
 }
 
@@ -1564,7 +1564,7 @@ onBeforeUnmount(() => {
   background-color: #f44336;
 }
 .btn-enable {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
 }
 .btn-disable {
   background-color: #f44336;
@@ -1604,7 +1604,7 @@ onBeforeUnmount(() => {
 }
 
 .btn-approve {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
 }
 .btn-reject {
   background-color: #f44336;
@@ -1768,7 +1768,7 @@ onBeforeUnmount(() => {
 }
 
 input:checked + .slider {
-  background-color: #4caf50;
+  background-color: var(--primary-color);
 }
 
 input:checked + .slider:before {
@@ -1804,7 +1804,7 @@ input:checked + .slider:before {
   width: 50px;
   height: 50px;
   border: 5px solid #f3f3f3;
-  border-top: 5px solid #4caf50;
+  border-top: 5px solid var(--primary-color);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
