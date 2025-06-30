@@ -1,7 +1,7 @@
 <template>
   <div class="cancha-detail" v-if="cancha && !isLoading">
     <div class="container">
-      <div class="back-link" @click="volver">&larr; Volver a la lista</div>
+      <div class="back-link" @click="volver">&larr; Volver a la lista.</div>
 
       <div class="detail-header">
         <div class="detail-header-content">
