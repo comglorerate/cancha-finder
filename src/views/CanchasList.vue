@@ -64,20 +64,32 @@
               <font-awesome-icon icon="times" />
             </button>
           </div>
-          <div v-if="tipoFilter" class="filter-tag">
+          <div
+            v-if="
+              typeof tipoFilter === 'object' ? tipoFilter?.value : tipoFilter
+            "
+            class="filter-tag"
+          >
             Deporte: {{ getFilterLabel(tipoFilter, tipoOptions) }}
             <button
-              @click="tipoFilter = ''"
+              @click="tipoFilter = null"
               class="remove-filter"
               aria-label="Quitar filtro de deporte"
             >
               <font-awesome-icon icon="times" />
             </button>
           </div>
-          <div v-if="precioFilter" class="filter-tag">
+          <div
+            v-if="
+              typeof precioFilter === 'object'
+                ? precioFilter?.value
+                : precioFilter
+            "
+            class="filter-tag"
+          >
             Precio: {{ getFilterLabel(precioFilter, precioOptions) }}
             <button
-              @click="precioFilter = ''"
+              @click="precioFilter = null"
               class="remove-filter"
               aria-label="Quitar filtro de precio"
             >
@@ -162,15 +174,9 @@ import { canchas } from "../data/canchas";
 const router = useRouter();
 const route = useRoute();
 
-// Estado
-const searchQuery = ref("");
-const tipoFilter = ref("");
-const precioFilter = ref("");
-const isLoading = ref(true);
-
 // Opciones para los selects
 const tipoOptions = [
-  { label: "Todos los deportes", value: "" },
+  { label: "Todos los deportes", value: null },
   { label: "Fútbol", value: "Fútbol" },
   { label: "Básquet", value: "Básquet" },
   { label: "Tenis", value: "Tenis" },
@@ -178,11 +184,17 @@ const tipoOptions = [
 ];
 
 const precioOptions = [
-  { label: "Todos los precios", value: "" },
+  { label: "Todos los precios", value: null },
   { label: "Económico (< 40€)", value: "barato" },
   { label: "Precio medio (40€ - 60€)", value: "medio" },
   { label: "Premium (> 60€)", value: "caro" },
 ];
+
+// Estado
+const searchQuery = ref("");
+const tipoFilter = ref(tipoOptions[0]); // Inicializar con "Todos los deportes"
+const precioFilter = ref(precioOptions[0]); // Inicializar con "Todos los precios"
+const isLoading = ref(true);
 
 // Computed properties
 const filteredCanchas = computed(() => {
@@ -193,17 +205,25 @@ const filteredCanchas = computed(() => {
       cancha.nombre.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       cancha.ubicacion.toLowerCase().includes(searchQuery.value.toLowerCase());
 
-    // Filtrar por tipo
+    // Filtrar por tipo - manejar tanto string como objeto
+    const tipoValue =
+      typeof tipoFilter.value === "object"
+        ? tipoFilter.value?.value
+        : tipoFilter.value;
     const tipoMatch =
-      tipoFilter.value === "" || cancha.tipo === tipoFilter.value;
+      !tipoValue || tipoValue === null || cancha.tipo === tipoValue;
 
-    // Filtrar por precio
+    // Filtrar por precio - manejar tanto string como objeto
+    const precioValue =
+      typeof precioFilter.value === "object"
+        ? precioFilter.value?.value
+        : precioFilter.value;
     let precioMatch = true;
-    if (precioFilter.value === "barato") {
+    if (precioValue === "barato") {
       precioMatch = cancha.precio < 40;
-    } else if (precioFilter.value === "medio") {
+    } else if (precioValue === "medio") {
       precioMatch = cancha.precio >= 40 && cancha.precio <= 60;
-    } else if (precioFilter.value === "caro") {
+    } else if (precioValue === "caro") {
       precioMatch = cancha.precio > 60;
     }
 
@@ -213,10 +233,19 @@ const filteredCanchas = computed(() => {
 
 // Verificar si hay filtros activos
 const hasActiveFilters = computed(() => {
+  const tipoValue =
+    typeof tipoFilter.value === "object"
+      ? tipoFilter.value?.value
+      : tipoFilter.value;
+  const precioValue =
+    typeof precioFilter.value === "object"
+      ? precioFilter.value?.value
+      : precioFilter.value;
+
   return (
     searchQuery.value !== "" ||
-    tipoFilter.value !== "" ||
-    precioFilter.value !== ""
+    (tipoValue !== null && tipoValue !== undefined) ||
+    (precioValue !== null && precioValue !== undefined)
   );
 });
 
@@ -224,19 +253,24 @@ const hasActiveFilters = computed(() => {
 watch([searchQuery, tipoFilter, precioFilter], () => {
   const query = {};
   if (searchQuery.value) query.busqueda = searchQuery.value;
-  if (tipoFilter.value) query.deporte = tipoFilter.value;
-  if (precioFilter.value) query.precio = precioFilter.value;
+
+  const tipoValue =
+    typeof tipoFilter.value === "object"
+      ? tipoFilter.value?.value
+      : tipoFilter.value;
+  if (tipoValue) query.deporte = tipoValue;
+
+  const precioValue =
+    typeof precioFilter.value === "object"
+      ? precioFilter.value?.value
+      : precioFilter.value;
+  if (precioValue) query.precio = precioValue;
 
   router.replace({ query });
 });
 
 // Inicializar los filtros basados en los parámetros de URL
 onMounted(() => {
-  // Simular tiempo de carga
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 500);
-
   // Si hay un parámetro 'deporte' en la URL, aplicar el filtro
   if (route.query.deporte) {
     // Buscar el valor correspondiente en las opciones
@@ -245,8 +279,8 @@ onMounted(() => {
         option.label === route.query.deporte ||
         option.value === route.query.deporte
     );
-    if (deporteOption) {
-      tipoFilter.value = deporteOption.value;
+    if (deporteOption && deporteOption.value !== null) {
+      tipoFilter.value = deporteOption;
     }
   }
 
@@ -257,8 +291,18 @@ onMounted(() => {
 
   // Si hay un parámetro de precio, aplicarlo
   if (route.query.precio) {
-    precioFilter.value = route.query.precio;
+    const precioOption = precioOptions.find(
+      (option) => option.value === route.query.precio
+    );
+    if (precioOption && precioOption.value !== null) {
+      precioFilter.value = precioOption;
+    }
   }
+
+  // Simular tiempo de carga
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 500);
 });
 
 // Métodos
@@ -296,15 +340,17 @@ const showStars = (rating) => {
 
 // Obtener etiqueta legible para los filtros
 const getFilterLabel = (value, options) => {
-  const option = options.find((opt) => opt.value === value);
-  return option ? option.label : value;
+  // Si el valor es un objeto, extraer el value
+  const actualValue = typeof value === "object" ? value?.value : value;
+  const option = options.find((opt) => opt.value === actualValue);
+  return option ? option.label : actualValue;
 };
 
 // Limpiar todos los filtros
 const clearFilters = () => {
   searchQuery.value = "";
-  tipoFilter.value = "";
-  precioFilter.value = "";
+  tipoFilter.value = tipoOptions[0]; // "Todos los deportes"
+  precioFilter.value = precioOptions[0]; // "Todos los precios"
 };
 
 // Manejar errores de imagen
