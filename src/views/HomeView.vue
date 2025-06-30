@@ -3,7 +3,7 @@
     <section class="hero">
       <div class="container hero-content">
         <h1 class="hero-title">
-          Cancha<span class="gradient-text">Finder</span>
+          Cancha<span class="gradient-text">Finder-</span>
         </h1>
         <p class="hero-subtitle">
           Tu destino definitivo para encontrar y reservar canchas deportivas.

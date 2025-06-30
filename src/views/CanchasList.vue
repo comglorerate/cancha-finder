@@ -2,7 +2,7 @@
   <div class="canchas-list">
     <div class="container">
       <h1 class="page-title">
-        Explorar <span class="gradient-text">Canchas</span>
+        Explorar <span class="gradient-text">Canchas.</span>
       </h1>
 
       <!-- Filtros -->
