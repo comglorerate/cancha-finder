@@ -1,6 +1,6 @@
 <template>
   <div class="admin-container">
-    <h1 class="admin-title">Panel de control</h1>
+    <h1 class="admin-title">Panel de Administración</h1>
 
     <div class="admin-nav" role="tablist">
       <button
