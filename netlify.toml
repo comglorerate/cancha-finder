@@ -1,0 +1,32 @@
+[build]
+  # Directory to change to before starting a build
+  base = "."
+  
+  # Directory that contains the deploy-ready HTML files and assets
+  publish = "dist"
+  
+  # Default build command
+  command = "npm run build"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Optional: Handle specific routes with parameters
+[[redirects]]
+  from = "/canchas/:id"
+  to = "/index.html"
+  status = 200
+
+# Optional: Handle admin routes
+[[redirects]]
+  from = "/admin/*"
+  to = "/index.html"
+  status = 200
+
+# Optional: Handle profile routes
+[[redirects]]
+  from = "/perfil/*"
+  to = "/index.html"
+  status = 200

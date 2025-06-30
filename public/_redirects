@@ -1,0 +1,10 @@
+# Netlify redirects file for Vue.js SPA
+# This redirects all routes to index.html so that Vue Router can handle them
+
+/*    /index.html   200
+
+# Optional: Redirect /canchas/:id to the proper route format
+/canchas/*  /index.html  200
+
+# Optional: Handle API calls if you have any
+/api/*  /api/:splat  200
